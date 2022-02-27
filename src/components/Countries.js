@@ -10,7 +10,7 @@ const Countries = () => {
     const [rangeValue, setRangeValue] = useState(40);
 
     const [selectedRadio, setSelectedRadio] = useState("");
-    const radios = ['a', 'b', 'c', 'd']; // <= possible de déclarer comme en js
+    const radios = ['doloribus', 'odit', 'ipsam', 'sunt']; // <= possible de déclarer comme en js
 
     useEffect(() => {
 
