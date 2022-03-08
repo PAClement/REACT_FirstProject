@@ -8,6 +8,7 @@ const News = () => {
     const [newsData, setNewsData] = useState([]);
     const [author, setAuthor] = useState("");
     const [content, setContent] = useState("");
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         getData();
@@ -24,27 +25,33 @@ const News = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios
-            .post('http://localhost:3003/articles', {
-                author: author,
-                content, //Possibilité de simplifier l'objet
-                date: Date.now()
-            }).then(() => { //.then ==“ensuite / puis”
-                setAuthor("");
-                setContent("");
-                getData();
-            });
+        if (content.length < 10) {
+            setError(true);
+        } else {
+            axios
+                .post('http://localhost:3003/articles', {
+                    author: author,
+                    content, //Possibilité de simplifier l'objet
+                    date: Date.now()
+                }).then(() => { //.then ==“ensuite / puis”
+                    setError(false);
+                    setAuthor("");
+                    setContent("");
+                    getData();
+                });
+        }
     }
 
     return (
         <div className="news-container">
             <Navigation />
             <Logo />
-            <h1>page news</h1>
-
             <form onSubmit={(e) => handleSubmit(e)}>
                 <input onChange={(e) => setAuthor(e.target.value)} type="text" placeholder="Nom" value={author} />
-                <textarea onChange={(e) => setContent(e.target.value)} placeholder="Message" value={content}></textarea>
+                <textarea style={{ border: error ? "1px solid red" : "1px solid #61dafb" }} onChange={(e) => setContent(e.target.value)} placeholder="Message" value={content}></textarea>
+
+                {error && <p>Veuillez entrer 10 caractères minimum</p>}
+
                 <input type="submit" value="Envoyer" />
             </form>
             <ul>
